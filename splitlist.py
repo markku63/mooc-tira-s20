@@ -1,15 +1,23 @@
 def count(t):
+    if len(t) < 2:
+        # alle kahden alkion  listaa ei voi jakaa
+        return 0
+
     # vasemman puolen suurin < oikean puolen pienin
-    vmax = -1
-    omin = min(t[1:])
+    vmax = []
+    vmax.append(t[0])
+    for i in range(1, len(t) - 1):
+        vmax.append(max(vmax[i - 1], t[i]))
+
+    omin = [0] * (len(t) - 1)
+    omin [-1] = t[-1]
+    for i in range(len(t) - 3, -1, -1):
+        omin[i] = min(omin[i + 1], t[i + 1])
+
     laskuri = 0
     for i in range(len(t)-1):
-        vmax = max(vmax, t[i])
-        omin = min(t[i+1:])
-        if vmax >= omin:
-            break
-        laskuri += 1
-
+        if vmax[i] < omin[i]:
+            laskuri += 1
     return laskuri
 
 if __name__ == "__main__":
