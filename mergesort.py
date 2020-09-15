@@ -24,10 +24,8 @@ def jarjesta(a, b):
     lomita(a, k, k+1, b)
 
 n = 10 ** 3
-taulu = [0]*n
+taulu = [i + 1 for i in range(n)]
 apu = [0]*n
-for i in range(n):
-    taulu[i] = i + 1
 shuffle(taulu)
 alku = perf_counter()
 jarjesta(0, len(taulu) - 1)

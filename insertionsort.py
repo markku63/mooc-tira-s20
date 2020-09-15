@@ -11,9 +11,7 @@ def isort(taulu):
             j -= 1
 
 n = 10 ** 5
-taulu = [0]*n
-for i in range(n):
-    taulu[i] = i + 1
+taulu = [i + 1 for i in range(n)]
 shuffle(taulu)
 alku = perf_counter()
 isort(taulu)

@@ -1,7 +1,5 @@
 def get(t):
-    result = [i for i in range(len(t))]
-    result.sort(key=lambda i: t[i])
-    return result
+    return sorted([i for i in range(len(t))], key=lambda i: t[i])
 
 if __name__ == "__main__":
     print(get([1,2,4,3])) # [0,1,3,2]
