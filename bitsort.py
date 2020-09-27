@@ -1,6 +1,12 @@
 def solve(s):
-    # TODO
-    i = int(s, 2)
+    zeros = 0
+    count = 0
+    for i in range(len(s) - 1, -1, -1):
+        if s[i] == '0':
+            zeros += 1
+        else:
+            count += zeros
+    return count
     
 
 
