@@ -1,7 +1,12 @@
 def count(t,k):
     res = []
-    for i in range(0, len(t) - k + 1):
-        res.append(len(frozenset(t[i:i+k])))
+    w_beg = 0
+    w_end = k
+    num_set = set(t[0:k])
+
+    while w_end <= len(t):
+        res.append(len(num_set))
+        
     return res
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 def solve(s):
     
-    return count
+    return -1
 
 if __name__ == "__main__":
     print(solve("CCAABB")) # 4
