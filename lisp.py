@@ -3,7 +3,7 @@ import re
 def eval(s):
     stack = []
     ev_stack = []
-    term = re.compile("^[0-9]+\)+")
+    term = re.compile(r"^[0-9]+\)+")
 
     expr = s.split()
     for tok in expr:
