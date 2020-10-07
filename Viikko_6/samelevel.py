@@ -1,10 +1,12 @@
 from collections import namedtuple
 
-def count2(node, level, depth):
-    pass
-
 def count(node, level):
-    return count2(node, level, 0)
+    if not node or level <= 0:
+        return 0 # tyhjä puu
+    elif level == 1:
+        return 1 # juuritasolla 1 solmu
+    else:
+        return count(node.left, level - 1) + count(node.right, level - 1)
 
 if __name__ == "__main__":
     Node = namedtuple("Node", ["left", "right"])
