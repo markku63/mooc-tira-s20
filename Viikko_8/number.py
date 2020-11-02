@@ -1,7 +1,7 @@
+def part(rem, lim):
+
 def count(n):
-    if n == 1:
-        return 1
-    else:
+    return part(n, 1)
         
 
 if __name__ == "__main__":
