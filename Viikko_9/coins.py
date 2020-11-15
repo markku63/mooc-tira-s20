@@ -1,5 +1,14 @@
 def count(t):
-    # TODO
+    s = sum(t)
+    summat = [False]*(s+1)
+    summat[0] = True
+    for i in range(len(t)):
+        for j in range(s, -1, -1):
+            if summat[j]:
+                summat[j + t[i]] = True
+    return summat.count(True) - 1 # jätetään pois summa == 0
+
+
 
 if __name__ == "__main__":
     print(count([3,4,5])) # 7
