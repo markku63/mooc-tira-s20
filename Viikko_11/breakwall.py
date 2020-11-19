@@ -1,7 +1,8 @@
 import math
 from heapq import heappush, heappop
 
-class Labyrinth():
+
+class Labyrinth:
     def __init__(self, r):
         self._r = r
         self._m = len(r)
@@ -14,13 +15,13 @@ class Labyrinth():
             if bx != -1:
                 self._bloc = (bx, y)
         self._neighbours = {}
-        for y in range(1, self._m-1):
-            for x in range(1, self._n-1):
+        for y in range(1, self._m - 1):
+            for x in range(1, self._n - 1):
                 self._neighbours[(x, y)] = []
-                self._check_neighbour((x, y), (x-1, y))
-                self._check_neighbour((x, y), (x+1, y))
-                self._check_neighbour((x, y), (x, y-1))
-                self._check_neighbour((x, y), (x, y+1))
+                self._check_neighbour((x, y), (x - 1, y))
+                self._check_neighbour((x, y), (x + 1, y))
+                self._check_neighbour((x, y), (x, y - 1))
+                self._check_neighbour((x, y), (x, y + 1))
 
     def _check_neighbour(self, here, neighbour):
         square = self._r[neighbour[1]][neighbour[0]]
@@ -42,22 +43,26 @@ class Labyrinth():
             visited[vtx] = True
             for edge in self._neighbours[vtx]:
                 curr = distances[edge[0]]
-                new = distances[vtx]+edge[1]
+                new = distances[vtx] + edge[1]
                 if new < curr:
                     distances[edge[0]] = new
                     heappush(heap, (new, edge[0]))
         return distances[self._bloc]
 
+
 def count(r):
     lab = Labyrinth(r)
     return lab.route()
 
+
 if __name__ == "__main__":
-    r = ["########",
-         "#*A*...#",
-         "#.*****#",
-         "#.**.**#",
-         "#.*****#",
-         "#..*.B.#",
-         "########"]
-    print(count(r)) # 2
+    r = [
+        "########",
+        "#*A*...#",
+        "#.*****#",
+        "#.**.**#",
+        "#.*****#",
+        "#..*.B.#",
+        "########",
+    ]
+    print(count(r))  # 2
