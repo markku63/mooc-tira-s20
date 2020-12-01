@@ -17,11 +17,12 @@ class WallGrid:
         a = self._repr(a)
         b = self._repr(b)
         if a == b:
-            return
+            return False
         if self._size[a] < self._size[b]:
             a, b = b, a
         self._parent[b] = a
         self._size[a] += self._size[b]
+        return True
 
     def remove(self,x,y):
         x, y = x-1, y-1
@@ -31,13 +32,11 @@ class WallGrid:
             if (x,y) not in self._parent:
                 self._parent[(x,y)] = (x,y)
                 self._size[(x,y)] = 1
+                self._rooms += 1
             for dir in [(0,1), (0,-1), (1,0), (-1,0)]:
                 if self._grid[y+dir[0]][x+dir[1]]:
-                    self._union((x, y), (x+dir[1], y+dir[0]))
-            rooms = set()
-            for room in self._parent.keys():
-                rooms.add(self._repr(room))
-            self._rooms = len(rooms)
+                    if self._union((x, y), (x+dir[1], y+dir[0])):
+                        self._rooms -= 1
 
     def count(self):
         return self._rooms
@@ -58,65 +57,3 @@ if __name__ == "__main__":
     print(w.count()) # 3
     w.remove(3,4)
     print(w.count()) # 1
-
-
-    w = WallGrid(72)
-    w.remove(69,31)
-    print(w.count())
-    w.remove(3,65)
-    w.remove(23,41)
-    print(w.count())
-    w.remove(15,46)
-    print(w.count())
-    w.remove(66,31)
-    w.remove(55,62)
-    w.remove(34,41)
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    w.remove(25,39)
-    print(w.count())
-    w.remove(14,17)
-    w.remove(9,7)
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    w.remove(64,28)
-    print(w.count())
-    print(w.count())
-    w.remove(54,61)
-    print(w.count())
-    w.remove(57,67)
-    w.remove(24,51)
-    print(w.count())
-    print(w.count())
-    w.remove(12,20)
-    w.remove(11,37)
-    print(w.count())
-    print(w.count())
-    w.remove(17,52)
-    w.remove(10,15)
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    print(w.count())
-    w.remove(57,65)
-    w.remove(39,45)
-    w.remove(54,20)
-    print(w.count())
-    w.remove(20,54)
-    print(w.count())
-    w.remove(24,22)
-    print(w.count())
-    w.remove(33,29)
-    w.remove(62,38)
-    w.remove(51,26)
-    print(w.count())
