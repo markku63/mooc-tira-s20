@@ -1,62 +1,46 @@
 from collections import deque
-from typing import Set, Mapping, Tuple
+from typing import List
 import sys
 
 inf = sys.maxsize
 
 class Ball:
     def __init__(self, n: int) -> None:
-        self._graph: Mapping[str, Set[str]] = {}
-        self._cap: Mapping[Tuple[str, str], int] = {}
-        self._graph["start"] = set()
-        self._graph["end"] = set()
+        self._n = n
+        self._graph = [[0]*(2*n + 2) for _ in range(2*n + 2)]
+        self._seen = None
+        self._flow = None
 
     def add_pair(self, a: int, b: int) -> None:
-        a: str = "K"+str(a)
-        b: str = "V"+str(b)
-        if a not in self._graph:
-            self._graph[a] = set()
-        if b not in self._graph:
-            self._graph[b] = set()
-        self._graph["start"].add(a)
-        self._cap[("start", a)] = 1
-        self._graph[b].add("end")
-        self._cap[(b, "end")] = 1
-        self._graph[a].add(b)
-        self._cap[(a, b)] = 1
+        self._graph[a][b + self._n] = 1
+        self._graph[0][a] = 1
+        self._graph[b + self._n][-1] = 1
 
-    def _bfs(self, a: str, b: str, flows: Mapping[Tuple[str, str], int]) -> Tuple[int, Mapping[str, str]]:
-        queue = deque()
-        parent: Mapping[str, str] = {}
-        m: Mapping[str, int] = {a: inf}
-        queue.append(a)
-        while not len(queue) == 0:
-            node = queue.popleft()
-            for neighbour in self._graph[node]:
-                if self._cap[(node, neighbour)] - flows[(node, neighbour)] > 0 and neighbour not in parent:
-                    parent[neighbour] = node
-                    m[neighbour] = min(m[node], self._cap[(node, neighbour)] - flows[(node, neighbour)])
-                    if neighbour == b:
-                        return m[b], parent
-                    queue.append(neighbour)
-        return 0, parent
+    def _bfs(self, a: int, b: int, flow: int) -> int:
+        if self._seen[a]:
+            return 0
+        self._seen[a] = True
+        if a == b:
+            return flow
+        for x in range(len(self._graph)):
+            if self._flow[a][x] > 0:
+                inc = self._bfs(x, b, min(flow, self._flow[a][x]))
+                if inc > 0:
+                    self._flow[a][x] -= inc
+                    self._flow[x][a] += inc
+                    return inc
+        return 0
 
     def calculate(self):
-        a: str = "start"
-        b: str = "end"
-        f: int = 0
-        flows = dict.fromkeys(self._cap, 0)
+        self._flow = [row[:] for row in self._graph]
+        total = 0
         while True:
-            m, p = self._bfs(a, b, flows)
-            if m == 0:
-                return f
-            f += m
-            v = b
-            while v != a:
-                u = p[v]
-                flows[(u, v)] = flows.get((u, v), 0) + m
-                flows[(v, u)] = flows.get((v, u), 0) - m
-                v = u
+            self._seen = [False]*len(self._graph)
+            add = self._bfs(0, len(self._graph)-1, inf)
+            if add == 0:
+                return total
+            total += add
+
 
 if __name__ == "__main__":
     b = Ball(4)
@@ -66,27 +50,3 @@ if __name__ == "__main__":
     b.add_pair(1,3)
     b.add_pair(3,2)
     print(b.calculate()) # 2
-
-    b = Ball(5)
-    print(b.calculate())
-    b.add_pair(5,5)
-    print(b.calculate())
-    b.add_pair(3,4)
-    print(b.calculate())
-    print(b.calculate())
-    print(b.calculate())
-    b.add_pair(1,3)
-    b.add_pair(4,2)
-    print(b.calculate())
-    b.add_pair(5,3)
-    b.add_pair(5,1)
-    b.add_pair(1,4)
-    b.add_pair(1,2)
-    b.add_pair(1,3)
-    print(b.calculate())
-    print(b.calculate())
-    b.add_pair(4,5)
-    print(b.calculate())
-    b.add_pair(2,5)
-    b.add_pair(5,5)
-    print(b.calculate()) # 5
